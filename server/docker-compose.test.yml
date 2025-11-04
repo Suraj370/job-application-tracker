@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  # The application service for testing
+  app-test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: my-app-test
+    
+    # --- Key Differences ---
+    # 1. We override the command to run your test script
+    #    (Assumes "bun test" is in your package.json)
+    command: bun test
+    
+    # 2. We load the .env.test file
+    env_file:
+      - ./.env.test
+    
+    # 3. We depend on the 'db-test' service
+    depends_on:
+      - db-test
+
+  # A separate, isolated database just for this test run
+  db-test:
+    image: postgres:15
+    container_name: my-app-db-test
+    
+    # We don't need to expose ports, it's all internal
+    
+    # 4. Environment variables MUST match your .env.test file
+    environment:
+      POSTGRES_USER: testuser
+      POSTGRES_PASSWORD: testpass
+      POSTGRES_DB: testdb

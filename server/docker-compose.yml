@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: my-app-dev
+    
+    # Runs your app with hot-reloading
+    command: bun run --watch index.ts
+    
+    ports:
+      # Maps your local port 3000 to the container's port 3000
+      # (This matches the PORT=3000 in your .env.dev)
+      - "3000:3000"
+      
+    volumes:
+      # Mounts your local code for hot-reloading
+      - ./src:/app/src
+      - ./prisma:/app/prisma
+      - ./index.ts:/app/index.ts
+      - ./tsconfig.json:/app/tsconfig.json
+    
+    # This is now the most important part:
+    # It loads your .env.dev file, which gives the container
+    # the DATABASE_URL for your Neon database.
+    env_file:
+      - ./.env.dev
+
