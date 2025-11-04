@@ -1,0 +1,29 @@
+# Node.js
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Bun
+.bun
+
+# Build artifacts
+dist
+build
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Git
+.git
+.gitignore
+
+# Docker
+.dockerignore
+Dockerfile
+docker-compose.yml
+
+# OS-specific
+.DS_Store
+Thumbs.db
