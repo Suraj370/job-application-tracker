@@ -14,7 +14,7 @@
   "scripts": {
     "dev": "bun run --watch index.ts",
     "start": "bun run index.ts",
-    "test": "bun test"
+    "test": "dotenv -e .env.test -- ... && bun test --env-file .env.test --concurrency=1"
   },
   "peerDependencies": {
     "typescript": "^5"

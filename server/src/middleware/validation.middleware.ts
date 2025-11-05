@@ -1,4 +1,4 @@
-import type{ Request, Response, NextFunction } from "express";
+import type { Request, Response, NextFunction } from "express";
 import * as v from "valibot";
 
 export const validate =
@@ -8,12 +8,13 @@ export const validate =
 
     if (!result.success) {
       const errors = result.issues.map((issue) => ({
-        path: issue.path?.join("."),
+        path: issue.path?.map((p: {key: string}) => p.key).join(".") ?? "",
         message: issue.message,
       }));
 
       return res.status(400).json({
         status: "error",
+        message: "Validation failed.",
         errors,
       });
     }
