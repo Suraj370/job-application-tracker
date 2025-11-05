@@ -26,5 +26,5 @@ services:
     # It loads your .env.dev file, which gives the container
     # the DATABASE_URL for your Neon database.
     env_file:
-      - ./.env.dev
+      - ./.env
 

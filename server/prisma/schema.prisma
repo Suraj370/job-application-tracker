@@ -19,4 +19,31 @@ model User {
   password  String   // This will store the HASHED password
   name      String?
   createdAt DateTime @default(now())
+
+  jobApplications JobApplication[]
+}
+
+model JobApplication {
+  id              String    @id @default(cuid())
+  title           String
+  company         String
+  jobDescription  String    @db.Text // Use @db.Text for long strings
+  status          JobStatus @default(APPLIED)
+  applicationDate DateTime  @default(now())
+  jobUrl          String?
+  notes           String?   @db.Text
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // This creates the one-to-many relationship
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+}
+
+enum JobStatus {
+  WISHLIST
+  APPLIED
+  INTERVIEW
+  OFFER
+  REJECTED
 }
