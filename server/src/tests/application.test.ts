@@ -6,32 +6,38 @@ import prisma from '../lib/prisma'; // Make sure this path is correct
 describe('Application Routes E2E', () => {
   let token: string;
   let userId: string;
+  const userEmail = 'jobuser@test.com'; 
+  const badUserEmail = 'bad@user.com';
 
   // --- Test Setup ---
-  afterEach(async () => {
-    await prisma.jobApplication.deleteMany();
-  });
-
-  afterAll(async () => {
-    await prisma.user.deleteMany();
-  });
-
-  beforeAll(async () => {
-    // Register
+beforeAll(async () => {
+    await prisma.user.deleteMany({
+      where: { email: { in: [userEmail, badUserEmail] } },
+    });
+    
     const userRes = await request(app).post('/api/auth/register').send({
-      email: 'jobuser@test.com',
+      email: userEmail,
       password: 'password123',
     });
     userId = userRes.body.id;
 
-    // Login
     const loginRes = await request(app).post('/api/auth/login').send({
-      email: 'jobuser@test.com',
+      email: userEmail,
       password: 'password123',
     });
     token = loginRes.body.token;
   });
+  
+  afterEach(async () => {
+    await prisma.jobApplication.deleteMany();
+  });
 
+
+  afterAll(async () => {
+    await prisma.user.deleteMany({
+      where: { email: { in: [userEmail, badUserEmail] } },
+    });
+  });
   // --- Tests ---
   test('POST /api/application - should create a new job', async () => {
     const jobData = {

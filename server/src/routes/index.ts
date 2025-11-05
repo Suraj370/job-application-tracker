@@ -3,6 +3,7 @@ import { authMiddleware } from '../middleware/auth.middleware';
 
 import authRoutes from './auth.routes';
 import applicationRoutes from './application.routes'
+import resumeRoutes from './resume.routes'
 
 
 const router = Router();
@@ -15,6 +16,7 @@ router.use('/auth', authRoutes);
 // All routes below this require a valid token
 router.use(authMiddleware);
 router.use('/application', applicationRoutes)
+router.use('/resumes', resumeRoutes)
 
 
 export default router;
